@@ -63,7 +63,7 @@ public class StockDAO {
         prep.setString(3, jsonObj.getString("exchange"));
         prep.executeUpdate();
     }
-    public static JSONArray stockJSONFromCDL(File stockCDL) {
+    private static JSONArray stockJSONFromCDL(File stockCDL) {
         try (BufferedReader buff = new BufferedReader(new FileReader(stockCDL));) {
             StringBuilder jsonString = new StringBuilder();
             String line;
