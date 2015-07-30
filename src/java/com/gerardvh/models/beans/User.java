@@ -19,17 +19,17 @@ public class User {
         // Empty implementation
     }
 
-    // public User(String name, String password, ArrayList<Stock> stockList, Date date, int id) {
-    //     this.name = name;
-    //     this.password = password;
-    //     this.stockList = stockList;
-    //     this.date = date;
-    //     this.id = id;
-    // }
-    // public User(String name, ArrayList<Stock> stockList, Date date, int id) {
-    //     // Convenience init without password
-    //     this(name, "", stockList, date, id);
-    // }
+    public User(String name, String password, ArrayList<Stock> stockList, Date date, int id) {
+        this.name = name;
+        this.password = password;
+        this.stockList = stockList;
+        this.date = date;
+        this.id = id;
+    }
+    public User(String name, ArrayList<Stock> stockList, Date date, int id) {
+        // Convenience init without password
+        this(name, "", stockList, date, id);
+    }
 
     public double getNetWorth() {
         netWorth = 0;

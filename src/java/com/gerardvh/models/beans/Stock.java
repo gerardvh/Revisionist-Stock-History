@@ -14,17 +14,17 @@ public class Stock {
         // Empty implementation
     }
 
-    // public Stock(String symbol, String name, int numShares, double price, int id) {
-    //     this.symbol = symbol;
-    //     this.name = name;
-    //     this.numShares = numShares;
-    //     this.price = price;
-    //     this.id = id;
-    // }
-    // public Stock(String symbol, String name) {
-    //     this.symbol = symbol;
-    //     this.name = name;
-    // }
+    public Stock(String symbol, String name, int numShares, double price, int id) {
+        this.symbol = symbol;
+        this.name = name;
+        this.numShares = numShares;
+        this.price = price;
+        this.id = id;
+    }
+    public Stock(String symbol, String name) {
+        this.symbol = symbol;
+        this.name = name;
+    }
 
     /**
      * @return the id
