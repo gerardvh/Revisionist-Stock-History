@@ -8,6 +8,10 @@
         <param-name>db_password</param-name>
         <param-value>aced3889</param-value>
     </context-param>
+    <context-param>
+        <param-name>quandl_auth_token</param-name>
+        <param-value>***REMOVED***</param-value>
+    </context-param>
     <listener>
         <listener-class>
              com.gerardvh.jdbc.GlobalConnectionPool

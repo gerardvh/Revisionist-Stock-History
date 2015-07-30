@@ -8,15 +8,15 @@ package com.gerardvh.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.gerardvh.jdbc.ConnectionPool;
 import com.gerardvh.models.dao.DummyData;
-import com.gerardvh.models.dao.StockDAO;
-import java.io.File;
+import com.gerardvh.http.RequestHandler;
+import com.gerardvh.models.dao.DBUtil;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -25,22 +25,23 @@ import java.io.File;
 public class indexServlet extends HttpServlet {
     DummyData dum = new DummyData();
     
-    // public void init() {
-    //     ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
-    //     Connection connection = null;
-    //     try {
-    //         connection = connectionPool.getConnection();
-    //         String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
-    //         StockDAO.populateStockDatabaseFromCDL(connection, new File(base_stock_data));
-    //         // StockController.populateStockDatabase(connection, dum.getDummyStockList());
-    //     } catch (SQLException e) {
-    //         System.err.println("Exception in 'processRequest()': " + e);
-    //     } finally {
-    //         if (connection != null) {
-    //             connectionPool.free(connection);
-    //         }
-    //     }
-    // }
+    public void init() {
+        // ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
+        // Connection connection = null;
+        // try {
+        //     connection = connectionPool.getConnection();
+        //     String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
+        //     StockDAO.populateStockDatabaseFromCDL(connection, new File(base_stock_data));
+        //     // StockController.populateStockDatabase(connection, dum.getDummyStockList());
+        // } catch (SQLException e) {
+        //     System.err.println("Exception in 'processRequest()': " + e);
+        // } finally {
+        //     if (connection != null) {
+        //         connectionPool.free(connection);
+        //     }
+        // }
+        RequestHandler.setAuthString(getServletContext().getInitParameter("auth_token"));
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,7 +60,14 @@ public class indexServlet extends HttpServlet {
         try {
             connection = connectionPool.getConnection();
             // neet to get the user and add it to request
-            request.setAttribute("user", dum.getUser());
+            // request.setAttribute("user", dum.getUser());
+
+            // Testing HttpRequester
+            DBUtil dbUtil = new DBUtil(new RequestHandler(), connection, "YHOO");
+            Thread t = new Thread(dbUtil);
+            t.start();
+            
+            // request.setAttribute("stock_quotes", stock_quotes);
 
             // Finished updating, send to jsp
             RequestDispatcher dispatcher = 

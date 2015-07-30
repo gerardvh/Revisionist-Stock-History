@@ -25,7 +25,6 @@ public class SQL {
         "CREATE TABLE IF NOT EXISTS stock_price (" +
             "id INTEGER PRIMARY KEY AUTO_INCREMENT, " +
             "stock_id INT NOT NULL, " +
-            "user_id INT NOT NULL, " +
             "date DATE NOT NULL, " +
             "close_price DOUBLE NOT NULL, " +
             "adj_close DOUBLE," +
@@ -37,10 +36,10 @@ public class SQL {
             "(name, password) " +
             "VALUES(?,?)";
     
-    static public final String POPULATE_HISTORY =
-        "INSERT INTO stock_history " +
-            "(stock_id, date, close_price) " +
-            "VALUES(?,?,?)";
+    static public final String POPULATE_PRICE =
+        "INSERT INTO stock_price " +
+            "(stock_id, date, close, adj_close) " +
+            "VALUES(?,?,?,?)";
     
     static public final String POPULATE_STOCK_SYMBOLS = 
         "INSERT INTO stock" +

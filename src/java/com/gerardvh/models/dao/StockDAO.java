@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import org.json.*;
 
@@ -78,6 +79,39 @@ public class StockDAO {
         }
         // return null if not successful
         return null;
-    } 
+    }
+    public static void addQuandlResponseToDB(JSONObject quandlResponse, Connection conn) throws SQLException {
+        try (PreparedStatement prep = conn.prepareStatement(SQL.POPULATE_PRICE);){
+            String symbol = quandlResponse.getString("code");
+            int stock_id = getStockIdForSymbol(symbol, conn);
+            JSONArray quandlArray = quandlResponse.getJSONArray("data");
+            for (Object obj : quandlArray) {
+                JSONArray quoteArray = (JSONArray) obj;
+                JSONObject quote = quoteArray.toJSONObject(quandlResponse.getJSONArray("column_names"));
+                prep.setInt(1, stock_id);
+                prep.setString(2, quote.getString("Date"));
+                prep.setDouble(3, quote.getDouble("Close"));
+                prep.setDouble(4, quote.getDouble("Adj. Close"));
+                prep.executeUpdate();
+            }
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
+        
+    }
+    private static void addJSONQuoteToDB(JSONObject quote, Connection conn) {
+
+    }
+    private static int getStockIdForSymbol(String symbol, Connection conn) throws SQLException {
+        PreparedStatement prep = conn.prepareStatement(
+            "SELECT id FROM stock WHERE symbol=?");
+        prep.setString(1, symbol);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("id");
+        } else {
+            return -1;
+        }
+    }
     
 }
