@@ -25,22 +25,22 @@ import java.io.File;
 public class indexServlet extends HttpServlet {
     DummyData dum = new DummyData();
     
-    public void init() {
-        ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-            String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
-            StockDAO.populateStockDatabaseFromCDL(connection, new File(base_stock_data));
-            // StockController.populateStockDatabase(connection, dum.getDummyStockList());
-        } catch (SQLException e) {
-            System.err.println("Exception in 'processRequest()': " + e);
-        } finally {
-            if (connection != null) {
-                connectionPool.free(connection);
-            }
-        }
-    }
+    // public void init() {
+    //     ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
+    //     Connection connection = null;
+    //     try {
+    //         connection = connectionPool.getConnection();
+    //         String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
+    //         StockDAO.populateStockDatabaseFromCDL(connection, new File(base_stock_data));
+    //         // StockController.populateStockDatabase(connection, dum.getDummyStockList());
+    //     } catch (SQLException e) {
+    //         System.err.println("Exception in 'processRequest()': " + e);
+    //     } finally {
+    //         if (connection != null) {
+    //             connectionPool.free(connection);
+    //         }
+    //     }
+    // }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,7 +63,7 @@ public class indexServlet extends HttpServlet {
 
             // Finished updating, send to jsp
             RequestDispatcher dispatcher = 
-                getServletContext().getRequestDispatcher("/revisionist-stock-history.jsp");
+                getServletContext().getRequestDispatcher("/testing_page.jsp");
             dispatcher.forward(request, response);
         } catch (SQLException e) {
             System.err.println("Exception in 'processRequest()': " + e);
