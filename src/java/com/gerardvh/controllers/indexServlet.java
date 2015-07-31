@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.gerardvh.jdbc.ConnectionPool;
 import com.gerardvh.models.dao.DummyData;
 import com.gerardvh.http.RequestHandler;
+import com.gerardvh.models.beans.Stock;
 import com.gerardvh.models.dao.DBUtil;
+import com.gerardvh.models.dao.StockDAO;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 
 /**
@@ -63,16 +66,26 @@ public class indexServlet extends HttpServlet {
             // request.setAttribute("user", dum.getUser());
 
             // Testing HttpRequester
-            DBUtil dbUtil = new DBUtil(new RequestHandler(), connection, "YHOO");
-            Thread t = new Thread(dbUtil);
-            t.start();
+//            DBUtil dbUtil = new DBUtil(new RequestHandler(), connection, "YHOO");
+//            Thread t = new Thread(dbUtil);
+//            t.start();
+            
+            ArrayList<Stock> stockList = 
+                    (ArrayList<Stock>)request.getAttribute("watched_stock_list");
+            if (stockList == null) {
+//                Nothing in our request yet. Send to Select page.
+                request.setAttribute("stockSymbols", StockDAO.getAllStocks(connectionPool));
+                RequestDispatcher dispatcher = 
+                    getServletContext().getRequestDispatcher("/chooseStocks.jsp");
+                dispatcher.forward(request, response);
+            } 
             
             // request.setAttribute("stock_quotes", stock_quotes);
 
             // Finished updating, send to jsp
-            RequestDispatcher dispatcher = 
-                getServletContext().getRequestDispatcher("/testing_page.jsp");
-            dispatcher.forward(request, response);
+//            RequestDispatcher dispatcher = 
+//                getServletContext().getRequestDispatcher("/testing_page.jsp");
+//            dispatcher.forward(request, response);
         } catch (SQLException e) {
             System.err.println("Exception in 'processRequest()': " + e);
         } finally {
@@ -108,9 +121,23 @@ public class indexServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        System.out.println("Here I am at post!");
+        ConnectionPool connectionPool = 
+            (ConnectionPool) getServletContext().getAttribute("connectionPool");
+        ArrayList<String> stockSymbols = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            String param = String.format("stock%d", i);
+            stockSymbols.add(param);
         }
-        /**
+        for (String stockSymbol : stockSymbols) {
+            Thread t = new Thread(new DBUtil(new RequestHandler(), connectionPool, stockSymbol));
+            t.start();
+            System.out.println("Running thread.");
+        }
+
+        processRequest(request, response);
+    }
+    /**
      * Returns a short description of the servlet.
      *
      * @return a String containing servlet description

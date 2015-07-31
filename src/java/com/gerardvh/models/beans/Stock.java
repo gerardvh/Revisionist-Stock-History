@@ -21,9 +21,10 @@ public class Stock {
         this.price = price;
         this.id = id;
     }
-    public Stock(String symbol, String name) {
+    public Stock(String symbol, String name, int id) {
         this.symbol = symbol;
         this.name = name;
+        this.id = id;
     }
 
     /**

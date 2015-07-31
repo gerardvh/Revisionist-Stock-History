@@ -5,6 +5,7 @@
  */
 package com.gerardvh.models.dao;
 
+import com.gerardvh.jdbc.ConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Date;
 import org.json.*;
 
 /**
@@ -50,6 +52,20 @@ public class StockDAO {
         }
         
     }
+    public static ArrayList<Stock> getAllStocks(ConnectionPool pool) throws SQLException {
+        ArrayList<Stock> stockList = new ArrayList<>();
+        try (Connection conn = pool.getConnection();
+            PreparedStatement prep = conn.prepareStatement("SELECT * FROM stock ORDER BY symbol");) {
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                stockList.add(new Stock(
+                    rs.getString("symbol"),
+                    rs.getString("name"),
+                    rs.getInt("id")));
+            }
+        }
+        return stockList;
+    }
     public static void populateStockDatabaseFromCDL(Connection conn, File stockCDL) throws SQLException {
         String line;
         JSONArray jsonArray = stockJSONFromCDL(stockCDL);
@@ -80,8 +96,9 @@ public class StockDAO {
         // return null if not successful
         return null;
     }
-    public static void addQuandlResponseToDB(JSONObject quandlResponse, Connection conn) throws SQLException {
-        try (PreparedStatement prep = conn.prepareStatement(SQL.POPULATE_PRICE);){
+    public static void addQuandlResponseToDB(JSONObject quandlResponse, ConnectionPool pool) throws SQLException {
+        try (Connection conn = pool.getConnection();
+            PreparedStatement prep = conn.prepareStatement(SQL.POPULATE_PRICE);){
             String symbol = quandlResponse.getString("code");
             int stock_id = getStockIdForSymbol(symbol, conn);
             JSONArray quandlArray = quandlResponse.getJSONArray("data");
@@ -112,6 +129,23 @@ public class StockDAO {
         } else {
             return -1;
         }
+    }
+    public static double getPriceByDateAndID(Date date, int id, ConnectionPool pool) throws SQLException {
+        try (Connection conn = pool.getConnection();
+            PreparedStatement prep = conn.prepareStatement(SQL.GET_PRICE_BY_DATE_AND_ID);) {
+            prep.setDate(1, date);
+            prep.setInt(2, id);
+            ResultSet rs = prep.executeQuery();
+            rs.next();
+            return rs.getDouble("close");
+        }
+
+    }
+
+    public static ArrayList<Stock> getListFromIDs(ArrayList<String> stockIDs) {
+        ArrayList<Stock> stockList = new ArrayList<>();
+        
+        return stockList;
     }
     
 }
