@@ -14,9 +14,10 @@
     </head>
     <body>
         <h1>Testing Page</h1>
+        <h2>${error_message}</h2>
         
-        <h2>Here is the Stock Quote</h2>
-        ${stock_quotes}
+        <h2>Here is the User State</h2>
+        ${user.userState}
         
     </body>
 </html>

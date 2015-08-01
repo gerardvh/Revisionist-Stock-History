@@ -8,6 +8,7 @@
 <body>
 <h1>${user.name}</h1>
 <h2>${user.date}</h2>
+<h2>${error_message}</h2>
 <!-- For-each loop that takes the ArrayList<Stock> and shows data in a table -->
 <p>
 <table border="1" cellpadding="2">
@@ -25,9 +26,10 @@
             <td><div name="numShares">${stock.numShares}</div></td>
             <td><div name="price">${stock.priceFormatted}</div></td>
             <td><div name="value">${stock.valueFormatted}</div></td>
+            <td><img src="http://chart.finance.yahoo.com/z?s=${stock.symbol}"></td>
             
-            <td><input type="submit" name="action" value="Buy">
-                <input type="submit" name="action" value="Sell">
+            <td><!-- <input type="submit" name="action" value="Buy">
+                <input type="submit" name="action" value="Sell"> -->
                 <input type="hidden" name="id" value="${stock.id}"/></td>
         </form> 
         </tr>
@@ -36,7 +38,7 @@
 <p/>
 <form action="/JH7_gvanhalsema/" method="POST">
     <input type="submit" name="action" value="Next Month">
-    <input type="submit" name="action" value="Populate Database">
+    <input type="submit" name="action" value="Refresh State">
 </form>
 
 <h3>Net Worth: ${user.netWorthFormatted}</h3>

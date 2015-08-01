@@ -5,7 +5,7 @@
 </head>
 <body>
 <!-- Need a form here for the name/password. Maybe we only show it conditionally if there is no user object? -->
-<form action="/JH7_gvanhalsema/loginServlet" method="POST">
+<form action="/JH7_gvanhalsema/" method="POST">
   <table>
   <tr>
     <td>Username: </td><td><input type="text" name="username" value=""></td>
@@ -17,6 +17,7 @@
   </tr>
   </table>
 </form>
+<p>${login_error}</p>
   
 
 </body>

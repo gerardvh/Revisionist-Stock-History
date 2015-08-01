@@ -1,6 +1,7 @@
 package com.gerardvh.models.beans;
 
 import java.text.NumberFormat;
+import org.json.JSONObject;
 
 public class Stock {
     private String symbol = "";
@@ -25,6 +26,13 @@ public class Stock {
         this.symbol = symbol;
         this.name = name;
         this.id = id;
+    }
+    public Stock(JSONObject json) {
+        this.symbol = json.getString("symbol");
+        this.name = json.getString("name");
+        this.numShares = json.getInt("numShares");
+        this.price = json.getDouble("price");
+        this.id = json.getInt("id");
     }
 
     /**

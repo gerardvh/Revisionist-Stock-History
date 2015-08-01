@@ -6,6 +6,7 @@ public class SQL {
             "id INTEGER PRIMARY KEY AUTO_INCREMENT, " +
             "name VARCHAR(30) NOT NULL, " +
             "password VARCHAR(30) NOT NULL, " +
+            "user_state TEXT, " +
             "date DATE)";
     static public final String CREATE_STOCK_TABLE = 
         "CREATE TABLE IF NOT EXISTS stock (" +
@@ -31,19 +32,31 @@ public class SQL {
             "FOREIGN KEY (stock_id) REFERENCES stock(id), " +
             "FOREIGN KEY (user_id) REFERENCES user(id))";
 
-    static public final String INSERT_USER = 
+    static public final String CREATE_NEW_USER = 
         "INSERT INTO user " +
             "(name, password) " +
             "VALUES(?,?)";
 
-    static public final String CHECK_USER_EXISTS = 
+    static public final String CHECK_USER_LOGIN = 
         "SELECT EXISTS(" +
             "SELECT 1 FROM user " +
             "WHERE name=? AND password=?)";
+    static public final String CHECK_USER_EXISTS = 
+        "SELECT EXISTS(" +
+            "SELECT 1 FROM user " +
+            "WHERE name=?)";
 
-    static public final String GET_USER_ID =
-        "SELECT id FROM user " +
-            "WHERE name=? AND password=?"; 
+    static public final String GET_USER =
+        "SELECT id,name,user_state FROM user " +
+            "WHERE name=? AND password=?";
+    static public final String SAVE_USER_STATE = 
+        "UPDATE user " +
+            "SET user_state=? " +
+            "WHERE id=?";
+    static public final String CLEAR_USER_STATE = 
+        "UPDATE user " +
+            "SET user_state=NULL " +
+            "WHERE id=?";
 
     static public final String GET_DATE_FOR_USER_ID = 
         "SELECT date FROM user " +

@@ -114,7 +114,6 @@ public class StockDAO {
         } catch (JSONException e) {
             System.out.println(e);
         }
-        
     }
     private static void addJSONQuoteToDB(JSONObject quote, Connection conn) {
 
@@ -130,11 +129,11 @@ public class StockDAO {
             return -1;
         }
     }
-    public static double getPriceByDateAndID(Date date, int id, ConnectionPool pool) throws SQLException {
+    public static double getPriceByDateAndID(Date date, int stock_id, ConnectionPool pool) throws SQLException {
         try (Connection conn = pool.getConnection();
             PreparedStatement prep = conn.prepareStatement(SQL.GET_PRICE_BY_DATE_AND_ID);) {
             prep.setDate(1, date);
-            prep.setInt(2, id);
+            prep.setInt(2, stock_id);
             ResultSet rs = prep.executeQuery();
             rs.next();
             return rs.getDouble("close");
@@ -142,10 +141,10 @@ public class StockDAO {
 
     }
 
-    public static ArrayList<Stock> getListFromIDs(ArrayList<String> stockIDs) {
-        ArrayList<Stock> stockList = new ArrayList<>();
+    // public static ArrayList<Stock> getListFromIDs(ArrayList<String> stockIDs) {
+    //     ArrayList<Stock> stockList = new ArrayList<>();
         
-        return stockList;
-    }
+    //     return stockList;
+    // }
     
 }

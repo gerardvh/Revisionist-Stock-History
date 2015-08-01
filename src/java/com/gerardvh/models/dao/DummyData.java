@@ -3,7 +3,7 @@ package com.gerardvh.models.dao;
 import com.gerardvh.models.beans.Stock;
 import com.gerardvh.models.beans.User;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 
 public class DummyData {
@@ -31,7 +31,7 @@ public class DummyData {
         return Math.random() * 100;
     }
     private void setupUser() {
-        user = new User("Testing", dummyStockList, new Date(), -1);
+        user = new User("Testing", dummyStockList, new Date(new java.util.Date().getTime()), -1);
     }
     public ArrayList<Stock> getDummyStockList() {
         return dummyStockList;

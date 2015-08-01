@@ -7,40 +7,40 @@
 </head>
 <body>
   <h1>Please Choose Some Stocks to Follow</h1>
-    <form action="/JH7_gvanhalsema/" method="POST">
+    <form action="/JH7_gvanhalsema/" method="GET">
       <table>
         <tr>
-          <td><select>
+          <td><select name="stock1">
             <c:forEach var="stock" items="${stockSymbols}" varStatus="loopStatus">
-              <option name="stock1" value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
+              <option   value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
             </c:forEach>
           </select></td>
           </tr>
         <tr>
-          <td><select>
+          <td><select name="stock2">
             <c:forEach var="stock" items="${stockSymbols}" varStatus="loopStatus">
-              <option name="stock2" value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
+              <option  value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
             </c:forEach>
           </select></td>
         </tr>
         <tr>
-          <td><select>
+          <td><select name="stock3">
             <c:forEach var="stock" items="${stockSymbols}" varStatus="loopStatus">
-              <option name="stock3" value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
+              <option  value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
             </c:forEach>
           </select></td>
         </tr>
         <tr>
-          <td><select>
+          <td><select name="stock4">
             <c:forEach var="stock" items="${stockSymbols}" varStatus="loopStatus">
-              <option name="stock4" value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
+              <option  value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
             </c:forEach>
           </select></td>
         </tr>
         <tr>
-          <td><select>
+          <td><select name="stock5">
             <c:forEach var="stock" items="${stockSymbols}" varStatus="loopStatus">
-              <option name="stock5" value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
+              <option  value="${stock.symbol}">${stock.symbol} | ${stock.name}</option>
             </c:forEach>
           </select></td>
         </tr>
