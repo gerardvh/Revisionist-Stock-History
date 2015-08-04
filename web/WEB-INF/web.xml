@@ -2,11 +2,11 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>db_userid</param-name>
-        <param-value>gerardvh</param-value>
+        <param-value>gvanhalsema</param-value>
     </context-param>
     <context-param>
         <param-name>db_password</param-name>
-        <param-value>aced3889</param-value>
+        <param-value>***REMOVED***</param-value>
     </context-param>
     <context-param>
         <param-name>quandl_auth_token</param-name>
