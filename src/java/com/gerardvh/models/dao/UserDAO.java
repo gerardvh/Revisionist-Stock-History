@@ -53,16 +53,23 @@ public class UserDAO {
             PreparedStatement prep = conn.prepareStatement(SQL.CHECK_USER_EXISTS);) {
             prep.setString(1, username);
             ResultSet rs = prep.executeQuery();
+            rs.next();
             return rs.getInt(1) == 1 ? true : false;
         }
     }
     public static boolean saveUserState(User user, ConnectionPool pool) throws SQLException {
-        try (Connection conn = pool.getConnection();
-            PreparedStatement prep = conn.prepareStatement(SQL.SAVE_USER_STATE)) {
+        Connection conn = null;
+        try {
+            conn = pool.getConnection();
+            PreparedStatement prep = conn.prepareStatement(SQL.SAVE_USER_STATE);
             String state = new JSONObject(user).toString();
             prep.setString(1, state);
             prep.setInt(2, user.getId());
             return prep.executeUpdate() == 1 ? true : false;
+        } finally {
+            if (conn != null) {
+                pool.free(conn);
+            }
         }
     }
     public static boolean clearUserState(User user, ConnectionPool pool) throws SQLException {

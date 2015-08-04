@@ -16,12 +16,13 @@ import com.gerardvh.jdbc.ConnectionPool;
 import com.gerardvh.models.dao.DummyData;
 import com.gerardvh.http.RequestHandler;
 import com.gerardvh.models.beans.User;
+import com.gerardvh.models.dao.DBUtil;
 import com.gerardvh.models.dao.StockDAO;
 import com.gerardvh.models.dao.UserDAO;
+import java.io.File;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
-import org.json.JSONObject;
 
 /**
  *
@@ -30,22 +31,24 @@ import org.json.JSONObject;
 public class indexServlet extends HttpServlet {
     DummyData dum = new DummyData();
     
-    public void init() {
-        // ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
-        // Connection connection = null;
-        // try {
-        //     connection = connectionPool.getConnection();
-        //     String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
-        //     StockDAO.populateStockDatabaseFromCDL(connection, new File(base_stock_data));
-        //     // StockController.populateStockDatabase(connection, dum.getDummyStockList());
-        // } catch (SQLException e) {
-        //     System.err.println("Exception in 'processRequest()': " + e);
-        // } finally {
-        //     if (connection != null) {
-        //         connectionPool.free(connection);
-        //     }
-        // }
-        RequestHandler.setAuthString(getServletContext().getInitParameter("auth_token"));
+    @Override
+    public void init(){
+        ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
+//        Connection connection = null;
+//        String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
+        try {
+//            connection = connectionPool.getConnection();
+            DBUtil.setupSQLTables(connectionPool);
+            if (StockDAO.stockDatabaseIsEmpty(connectionPool)) {
+                String base_stock_data = getServletContext().getRealPath("/WEB-INF/base_stock_data.txt");
+                StockDAO.populateStockDatabaseFromCDL(connectionPool, new File(base_stock_data));
+            }
+            // StockController.populateStockDatabase(connection, dum.getDummyStockList());
+        } catch (SQLException e) {
+            System.out.println("Exception in 'processRequest()': " + e);
+        }
+
+        RequestHandler.setAuthString(getServletContext().getInitParameter("quandl_auth_token"));
     }
 
     /**
@@ -60,15 +63,16 @@ public class indexServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ConnectionPool connectionPool = (ConnectionPool) getServletContext().getAttribute("connectionPool");
-        Connection connection = null;
+//        Connection connection = null;
         try {
-            connection = connectionPool.getConnection();
-            String pageToForwardTo = "/JH7_gvanhalsema/";
+//            connection = connectionPool.getConnection();
+            String pageToForwardTo = "/testing_page.jsp";
             HttpSession session = request.getSession(true);
 
             if (session.getAttribute("user") == null || request.getAttribute("login_error") != null) {
                 pageToForwardTo = "/login.jsp";
             }
+            
             
             // neet to get the user and add it to request
             // request.setAttribute("user", dum.getUser());
@@ -177,6 +181,7 @@ public class indexServlet extends HttpServlet {
                         break;
                     default:
                         System.out.println("Don't know what to do with: " + action);
+                        pageToForwardTo = "/testing_page.jsp";
                         break; 
                 } 
             }
@@ -188,11 +193,11 @@ public class indexServlet extends HttpServlet {
         } catch (SQLException e) {
             System.err.println("Exception in 'processRequest()': " + e);
         } 
-        finally {
-            if (connection != null) {
-                connectionPool.free(connection);
-            }
-        }
+//        finally {
+//            if (connection != null) {
+//                connectionPool.free(connection);
+//            }
+//        }
 
     }
 

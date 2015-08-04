@@ -25,6 +25,10 @@
         <servlet-name>loginServlet</servlet-name>
         <servlet-class>com.gerardvh.controllers.loginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>update_stocks</servlet-name>
+        <servlet-class>com.gerardvh.controllers.update_stocks</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
         <url-pattern>/</url-pattern>
@@ -32,6 +36,10 @@
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>update_stocks</servlet-name>
+        <url-pattern>/update_stocks</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

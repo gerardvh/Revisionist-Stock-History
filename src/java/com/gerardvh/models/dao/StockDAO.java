@@ -66,19 +66,23 @@ public class StockDAO {
         }
         return stockList;
     }
-    public static void populateStockDatabaseFromCDL(Connection conn, File stockCDL) throws SQLException {
-        String line;
+    public static void populateStockDatabaseFromCDL(ConnectionPool pool, File stockCDL) throws SQLException {
+//        String line;
         JSONArray jsonArray = stockJSONFromCDL(stockCDL);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            addJSONObjectToDatabase(jsonArray.getJSONObject(i), conn);
-        }
+        try (Connection conn = pool.getConnection();) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                addJSONObjectToDatabase(jsonArray.getJSONObject(i), conn);
+            }
+        } 
+        
     }
     public static void addJSONObjectToDatabase(JSONObject jsonObj, Connection conn) throws SQLException {
-        PreparedStatement prep = conn.prepareStatement(SQL.POPULATE_STOCK_SYMBOLS);
-        prep.setString(1, jsonObj.getString("symbol"));
-        prep.setString(2, jsonObj.getString("name"));
-        prep.setString(3, jsonObj.getString("exchange"));
-        prep.executeUpdate();
+        try (PreparedStatement prep = conn.prepareStatement(SQL.POPULATE_STOCK_SYMBOLS);) {
+            prep.setString(1, jsonObj.getString("symbol"));
+            prep.setString(2, jsonObj.getString("name"));
+            prep.setString(3, jsonObj.getString("exchange"));
+            prep.executeUpdate();
+        }
     }
     private static JSONArray stockJSONFromCDL(File stockCDL) {
         try (BufferedReader buff = new BufferedReader(new FileReader(stockCDL));) {
@@ -146,5 +150,14 @@ public class StockDAO {
         
     //     return stockList;
     // }
+
+    public static boolean stockDatabaseIsEmpty(ConnectionPool connectionPool) throws SQLException {
+        try (Connection conn = connectionPool.getConnection();
+            PreparedStatement prep = conn.prepareStatement("SELECT EXISTS (SELECT 1 FROM stock)");) {
+            ResultSet rs = prep.executeQuery();
+            rs.next();
+            return rs.getInt(1) == 0;
+        }
+    }
     
 }

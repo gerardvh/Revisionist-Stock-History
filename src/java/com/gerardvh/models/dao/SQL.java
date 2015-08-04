@@ -1,5 +1,7 @@
 package com.gerardvh.models.dao;
 
+import java.util.ArrayList;
+
 public class SQL {
     static public final String CREATE_USER_TABLE = 
         "CREATE TABLE IF NOT EXISTS user (" +
@@ -12,25 +14,32 @@ public class SQL {
         "CREATE TABLE IF NOT EXISTS stock (" +
             "id INTEGER PRIMARY KEY AUTO_INCREMENT, " +
             "symbol VARCHAR(15) NOT NULL, " +
-            "name VARCHAR(50) NOT NULL, " +
+            "name VARCHAR(100) NOT NULL, " +
             "exchange VARCHAR(8))";
     static public final String CREATE_OWNED_STOCK_TABLE = 
         "CREATE TABLE IF NOT EXISTS owned_stocks(" +
             "id INT PRIMARY KEY AUTO_INCREMENT, " +
             "user_id INT NOT NULL, " +
             "stock_id INT NOT NULL, " +
-            "num_shares INT, " +
-            "FOREIGN KEY (user_id) REFERENCES user(id), " +
-            "FOREIGN KEY (stock_id) REFERENCES stock(id))";
+            "num_shares INT)";
     static public final String CREATE_PRICE_TABLE = 
         "CREATE TABLE IF NOT EXISTS stock_price (" +
             "id INTEGER PRIMARY KEY AUTO_INCREMENT, " +
+            "user_id INT NOT NULL, " +
             "stock_id INT NOT NULL, " +
             "date DATE NOT NULL, " +
             "close_price DOUBLE NOT NULL, " +
-            "adj_close DOUBLE," +
-            "FOREIGN KEY (stock_id) REFERENCES stock(id), " +
-            "FOREIGN KEY (user_id) REFERENCES user(id))";
+            "adj_close DOUBLE)";
+
+    static public ArrayList<String> getTableSQL() {
+        ArrayList<String> sqlStrings = new ArrayList<>();
+        sqlStrings.add(CREATE_USER_TABLE);
+        sqlStrings.add(CREATE_STOCK_TABLE);
+        sqlStrings.add(CREATE_OWNED_STOCK_TABLE);
+        sqlStrings.add(CREATE_PRICE_TABLE);
+        return sqlStrings;
+
+    }
 
     static public final String CREATE_NEW_USER = 
         "INSERT INTO user " +
