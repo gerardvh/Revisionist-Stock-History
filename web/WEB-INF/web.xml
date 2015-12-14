@@ -6,11 +6,11 @@
     </context-param>
     <context-param>
         <param-name>db_password</param-name>
-        <param-value>***REMOVED***</param-value>
+        <param-value>zX2D4G4jrDbY</param-value>
     </context-param>
     <context-param>
         <param-name>quandl_auth_token</param-name>
-        <param-value>***REMOVED***</param-value>
+        <param-value>oifd_-xMaWkEZmuJhys2</param-value>
     </context-param>
     <listener>
         <listener-class>
