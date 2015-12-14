@@ -171,7 +171,7 @@ public class indexServlet extends HttpServlet {
                             break;
                         }
                         break;
-                    case "Refresh State":
+                    case "Reset My Stocks":
                         User refreshUser = (User) session.getAttribute("user");
                         if (refreshUser != null) {
                             UserDAO.clearUserState(refreshUser, connectionPool);

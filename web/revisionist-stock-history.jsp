@@ -6,9 +6,13 @@
   <title>Revisionist Stock History</title>
 </head>
 <body>
-<h1>Your Stock List</h1>
+<h1>Your Stock List | Total Net Worth: ${user.netWorthFormatted}</h1>
 <HR>
 <h2>${error_message}</h2>
+<form action="/JH7_gvanhalsema/" method="POST">
+<!--    <input type="submit" name="action" value="Next Month">
+    --><input type="submit" name="action" value="Reset My Stocks">
+</form>
 <!-- For-each loop that takes the ArrayList<Stock> and shows data in a table -->
 <p>
 <c:forEach var="stock" items="${user.stockList}" varStatus="loopStatus">
@@ -33,12 +37,8 @@
 <HR>
 </c:forEach>
 </p>
-<form action="/JH7_gvanhalsema/" method="POST">
-<!--    <input type="submit" name="action" value="Next Month">
-    <input type="submit" name="action" value="Refresh State">-->
-</form>
 
-<h3>Net Worth: ${user.netWorthFormatted}</h3>
+
 
 <!-- Date (Progress) and buttons to move on -->
 
